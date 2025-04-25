@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Page</title>
+</head>
+<body>
+    <p style="font-size: 100px;" class="para">welcome to the Secret Number Game!</p>
+    <script>
+       let game = (function GuessTheNumber(){
+
+            var secret = 8;
+
+            const validating = ()=>{
+               let guess = prompt("Guess the number");
+               for(let i=1;i<3;i++){
+               if(guess==secret){
+                alert("Correct!");
+                return;
+               }
+               else if(guess>secret){
+               guess = prompt("Too high!");
+               }
+               else if(guess<secret){
+                guess = prompt("Too low!")
+               }
+            }
+            alert("Chances are Over");
+            return;
+             }    
+             return validating;  
+        })();
+         game();
+         console.log(game.secret);
+    </script>
+</body>
+</html>
+
