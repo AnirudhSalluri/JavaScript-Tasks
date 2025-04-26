@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Page</title>
+</head>
+<body>
+    <p style="font-size: 50px;" class="para">User Profile Manager</p>
+    <p class="display"></p>
+    <button class="addbtn">Add new user</button>
+    <button class="showbtn">Show Users</button>
+    <button id="clearbtn">Clear Users</button>
+
+    <script>
+        let clearbtn = document.getElementById("clearbtn");
+        let showbtn =  document.querySelector(".showbtn");
+        let addbtn =   document.querySelector(".addbtn");
+        let display = document.querySelector(".display");
+
+        let users = [];
+        let outusers =[];
+
+        addbtn.addEventListener("click",()=>{
+         let username = String(prompt("Enter user name"));
+         let email = prompt("Enter email");
+         if(users.includes(username)){
+            return alert("User Already Exists");
+         }
+         users.push({
+            id:users.length+1,
+            username,
+            email
+         })
+         setTimeout(()=>{
+            alert("User added successfully");
+            display.innerText="User Added";3333
+         },1000)
+          outusers = users.map((item)=>{
+          return{
+           
+           id:item.id,
+           username:String(item.username).trim().toUpperCase(),
+           email:String(item.email).trim().toLowerCase()
+         };
+        });
+        })
+       
+        showbtn.addEventListener("click",()=>{
+          let out =  outusers.filter((i)=>{
+            if(i.hasOwnProperty('id')){
+              return i.id<4;
+            }
+          });
+          out.forEach((item)=>{
+            console.log(Object.entries(item));
+          })
+         display.innerText="Users displayed in Console";
+        }) 
+    </script>
+</body>
+</html>
+
