@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Page</title>
+</head>
+<body>
+    <h3 style="font-size: 100px;" class="para">Weather Checker App</h3>
+    <input class="search" type="text" placeholder="Enter place name"/>
+    <button class="btn">Get weather</button>
+    <p class="description"></p>
+
+    <script>
+        let btn = document.querySelector(".btn");
+        let search = document.querySelector(".search");
+        let description = document.querySelector(".description");
+        let weatherdata = [];
+
+        try{
+            fetch("http://localhost:5000/api/weather")
+            .then((res)=>{
+                return res.json()
+            })
+            .then((res)=>{
+                weatherdata = res.data
+                console.log(res)
+            })
+        }catch(err){
+            console.log(err);
+        }
+
+        let type = "";
+        let timer;
+
+        search.addEventListener('input',(e)=>{
+            clearTimeout(timer);
+            timer = setTimeout(()=>{
+                type=e.target.value;
+            },1000)
+        })
+
+        btn.addEventListener('click',()=>{
+            if(type===""){
+                description.innerText="You must enter city name";
+                throw new Error("You must Enter a Cityname");    
+            }
+            try{
+                //let temperature = (weatherdata?.city===type)?weatherdata?.city?.Temperature:"Weather data is incomplete";
+                let sample = weatherdata.find(i=>i.city===type);
+                let temp = sample?.temperature;
+                let desc = sample?.description;
+                description.innerText = `Temparature: ${temp} Descreption: ${desc}`
+            }catch(err){
+                console.log(err);
+            }
+        })
+
+        const checkerror=(a)=>{
+            if(a==10){
+                throw new Error("No fuck found")
+            }
+        }
+
+       checkerror(10);
+        
+     
+    </script>
+</body>
+</html>
+

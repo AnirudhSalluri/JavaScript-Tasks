@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Search & Logger</title>
+</head>
+<body>
+  <h1>Smart Search</h1>
+  <input type="text" id="searchInput" placeholder="Type to search..." />
+  <p id="resultDisplay">Results: </p>
+
+  <script>
+   
+    const logger = (type) => (message) => {
+      console.log(`(${type.toUpperCase()}) - ${message}`);
+    };
+
+    const infoLogger = logger("info");
+
+   
+    function simulatedSearch(query) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve([query.toUpperCase(), "result1", "result2"]);
+        }, 1000);
+      })
+        .then((results) => results.map(r => r.toUpperCase()))
+        .then((results) => results.filter(r => r.length > 0));
+    }
+
+    const input = document.getElementById("searchInput");
+    const resultDisplay = document.getElementById("resultDisplay");
+
+    let lastThrottleTime = 0;
+    let debounceTimer;
+
+    input.addEventListener("input", (e) => {
+      const text = e.target.value;
+      const now = Date.now();
+
+     
+      if (now - lastThrottleTime >= 1000) {
+        lastThrottleTime = now;
+        infoLogger(`Throttled keystroke: ${text}`);
+      }
+
+      
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        infoLogger("Debounced search triggered");
+        simulatedSearch(text).then((results) => {
+          resultDisplay.textContent = `Results: ${results.join(", ")}`;
+        });
+      }, 1000);
+    });
+  </script>
+</body>
+</html>

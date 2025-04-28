@@ -1,0 +1,67 @@
+<!Doctype html>
+<head>
+    <title>
+       Task 7
+    </title>
+</head>
+<body>
+    <h3> Task 7 </h3>
+       <button class="clearbtn" >Clear </button>
+    <script>
+        let btn = document.querySelector(".clearbtn");
+        
+        function User(name){
+            this.name =name
+        }
+
+        function Visitor(name,vistCount){
+            User.call(this,name);
+            this.vistCount=vistCount;
+        }
+
+        Visitor.prototype = Object.create(User.prototype);
+        Visitor.prototype.constructor = Visitor;
+
+        Visitor.prototype.count=function(){
+            this.vistCount = this.vistCount+1; 
+        }
+
+        const localstore=(username)=>{
+           let user = JSON.parse(localStorage.getItem(username));
+           let cookies = document.cookie.split('; ');
+           let visits;
+           for(let cookie of cookies){
+            if(cookie.startsWith(username))
+              visits = document.cookie.split('=')[1];
+           }
+           if(user){
+            visits = parseInt(visits)+1;
+            alert(`Hi ${user.name} this is your ${visits} visit`)       
+             }
+             else{
+                visits=1;
+                 let newUser = new Visitor(String(username), visits);
+                localStorage.setItem(newUser.name,JSON.stringify(newUser));
+                alert(`Hi , ${newUser.name} this is your first visit`) 
+             }
+             document.cookie=`${username}_visits=${visits};max-age=7*24*60*60`
+             
+            
+        }
+
+           let username = prompt("Enter your name");
+           localstore(username);
+
+           btn.addEventListener('click',()=>{
+            localStorage.clear();
+            let cookies = document.cookie.split('; ')
+            cookies.forEach(cookie=>{
+                const cookieName = cookie.split('=')[0];
+                document.cookie = `${cookieName}=; max-age=-1}` 
+            })
+            alert("All data Cleared");
+            });
+
+    </script>
+</body>
+</html>
